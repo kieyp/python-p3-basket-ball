@@ -182,3 +182,110 @@ def game_dict():
             ]
         }
     }
+
+
+
+
+
+
+#Helperfunctions
+
+def get_all_players():
+    return [*game_dict()['home']['players'],*game_dict()['away']['players']]
+
+def get_player(player_name):
+    
+    for player_data in get_all_players():
+        if player_data['name'] == player_name:
+            return player_data
+
+        
+def get_team(team_name):
+    
+    for team in game_dict().values():
+        if team['team_name'] == team_name:
+            return team
+
+
+
+
+
+def num_points_per_game(player_name):
+    players=get_player(player_name)
+    
+    if players == None:
+        return "Players Data not found"
+    return players['points_per_game']
+
+print(num_points_per_game('Rui Hachimura'))
+    
+
+def player_age(player_name):
+    players=get_player(player_name)
+    
+    if players == None:
+        return "Players Data not found"
+    return players['age']
+
+result=player_age('Davis Bertans')
+print(result)
+
+def team_colors(team_name):
+    team_data=get_team(team_name)
+    if team_data == None:
+        return 'This team doesnt take colors seriously'
+    return team_data['colors']
+
+print(team_colors('Washington Wizards'))
+
+    
+def team_names():
+    team_names=[]
+    for team in game_dict().values():
+        
+        team_names.append(team['team_name'])
+        
+    return team_names
+
+print(team_names())
+
+def player_numbers(team_name):
+    
+    list=[]
+    team_data=get_team(team_name)
+    
+    for player_data in team_data.get('players',[]):
+        list.append(player_data.get('number'))
+    return list
+result=player_numbers('Washington Wizards')
+print(result)
+
+def player_stats(player_name):
+    
+    for player_data in get_all_players():
+        if player_data['name'] == player_name:
+            return player_data
+result=player_stats('Bradley Beal')
+print(result)
+
+def average_rebounds_by_shoe_brand():
+    
+    shoe_brand_rebound={}
+    
+    for team in game_dict().values():
+        for players in team['players']:
+            shoe_brand=players['shoe_brand']
+            rebound=players['rebounds_per_game']
+            
+            if shoe_brand in shoe_brand_rebound:
+                shoe_brand_rebound[shoe_brand].append(rebound)
+            else:
+                shoe_brand_rebound[shoe_brand]=[rebound]
+                
+                
+    for brand,data_count in shoe_brand_rebound.items():
+            avg=sum(data_count)/len(data_count)
+            
+            print(f"{brand}: {avg:.2f}")
+            
+average_rebounds_by_shoe_brand()
